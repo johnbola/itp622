@@ -36,8 +36,8 @@
           $stmt->execute($data);
           $result = $stmt->fetch();
 
-          var_dump($result);
-          die();
+          // var_dump($result);
+          // die();
 
           if($stmt->rowCount() == 1)
           {
