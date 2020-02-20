@@ -27,16 +27,24 @@
         $fname = $_POST['fname'];
         $mname = $_POST['mname'];
         $username = $_POST['username'];
+        $dob = $_POST['dob'];
+        $course = $_POST['course'];
+
+        // $dob = date_format($_POST['dob'], 'Y-m-d');
+        // echo $dob;
+        // die();
         $pass =  hash('sha256',$_POST['pass']);
         
       
 
         $data = [
             'lname' => $lname,
-            'fname' => $fname,
+            'fname' => $fname,  
             'mname' => $mname,
+            'dob' => $dob,
+            'course' => $course,
         ];
-        $sql = "INSERT INTO tblstudents (lname, fname, mname) VALUES (:lname, :fname, :mname)";
+        $sql = "INSERT INTO tblstudents (lname, fname, mname, bday, course) VALUES (:lname, :fname, :mname, :dob, :course)";
         $stmt= $conn->prepare($sql);
         $stmt->execute($data);
 
@@ -71,7 +79,7 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
+    <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
     <title>Hello, world!</title>
   </head>
   <body>
@@ -144,11 +152,32 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text">@</span>
                 </div>
-                <input type="text" class="form-control" id="username" name='username' value="<?php echo date("dmYhis") . strtoupper(random_strings(10)); ?>" required="">
+                <input type="text" class="form-control" id="username" name='invcode' value="<?php echo date("dmYhis") . strtoupper(random_strings(10)); ?>" required="">
                 <div class="invalid-feedback" style="width: 100%;">
                   Your username is required.
                 </div>
               </div>
+            </div>
+            <div class="mb-3">
+              <label for="username">Date of Birth</label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">@</span>
+                </div>  
+                <input type="text" class="form-control" id="datepicker" name='dob' value="" required="">
+                <div class="invalid-feedback" style="width: 100%;">
+                  Your username is required.
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="exampleFormControlSelect1">Course</label>
+              <select class="form-control" id="exampleFormControlSelect1" name='course'>
+                <option value="BSCS">Bachelor of Science in Computer Science</option>
+                <option value='BSIT'>Bachelor of Science in Information Technology</option>
+                <option value='BSIS'>Bachelor of Science in Information Systems</option>
+              </select>
             </div>
 
             
@@ -174,5 +203,12 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+    <script>
+        $('#datepicker').datepicker({ 
+            uiLibrary: 'bootstrap4', 
+            format: 'yyyy-mm-dd'
+        });
+    </script>
   </body>
 </html>

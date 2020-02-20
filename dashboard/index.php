@@ -15,20 +15,28 @@
         
         if($_POST['course'] == 'All')
         {
-                $sql = "SELECT * FROM tblstudents";
+                $sql = "SELECT *, CONCAT(lname, ', ' , fname, ' ' , mname ) AS fullname FROM tblstudents";
                 $stmt= $conn->prepare($sql);
                 $stmt->execute();
+                $result = $stmt->fetchAll();
+
+                // echo "<pre>";
+                // var_dump($result);
+                // die();
+                // echo $result[0]['sstatus'];
+                // die();
         } else
         {
-                $data = [
-                'course' => $_POST['course']
-              ];
-              $sql = "SELECT * FROM tblstudents WHERE course = :course";
-              $stmt= $conn->prepare($sql);
-              $stmt->execute($data);
+              //   $data = [
+              //   'course' => $_POST['course']
+              // ];
+              // $sql = "SELECT * FROM tblstudents WHERE course = :course";
+              // $stmt= $conn->prepare($sql);
+              // $stmt->execute($data);
+              // $result = $stmt->fetchAll();
         }
           
-          $result = $stmt->fetchAll();
+          
       }
      
 ?>
@@ -191,7 +199,7 @@
         <table id='customdt' class="table table-striped table-sm">
           <thead>
             <tr>
-
+              <th>Fullname</th>
               <th>Lastname</th>
               <th>Firstname</th>
               <th>Middlename</th>
@@ -207,12 +215,27 @@
                 foreach($result as $row)
                 {
                     echo "<tr>";
+                    echo "<td>" . $row['fullname'] . "</td>";
                     echo "<td>" . $row['lname'] . "</td>";
                     echo "<td>" . $row['fname'] . "</td>";
                     echo "<td>" . $row['mname'] . "</td>";
                     echo "<td>" . $row['course'] . "</td>";
                     echo "<td>";
                         echo '<a href="../studentupdate?id=' . base64_encode($row['id']) .  '" class="btn btn-primary btn-sm">Edit</a>';
+                        echo '<a href="../studentupdate?id=' . base64_encode($row['id']) .  '&del=y" class="btn btn-danger btn-sm">Delete</a>';
+                       // echo $row['sstatus'];
+                        if($row['sstatus'] == 'approved')
+                        {
+                            //echo "disable";
+                           echo '<a href="../studentupdate?id=' . base64_encode($row['id']) .  '&updatestatus=y" class="btn btn-warning btn-sm">Disable</a>';                      
+                        } else
+                        {
+                          //echo "enable";
+                            echo '<a href="../studentupdate?id=' . base64_encode($row['id']) .  '&enablestatus=y" class="btn btn-warning btn-sm">Enable</a>';
+                         }
+                        
+     
+
                     echo "</td>";
                     echo "</tr>";
                 }

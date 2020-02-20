@@ -31,13 +31,24 @@
             'username' => $username,
             'pass' => $pass
           ];
-          $sql = "SELECT * FROM tblusers WHERE username=:username AND password = :pass";
-          $stmt= $conn->prepare($sql);
-          $stmt->execute($data);
-          $result = $stmt->fetch();
+          // $sql = "SELECT * FROM tblusers 
+          // WHERE username=:username AND password = :pass AND sstatus='approved' ";
+          try {
+                $sql = "SELECT * FROM tblusers INNER JOIN tblstudents
+                ON tblstudents.id = tblusers.useraccountid
+                WHERE username=:username AND password = :pass AND sstatus='approved'";
 
+                $stmt= $conn->prepare($sql);
+                $stmt->execute($data);
+                $result = $stmt->fetch();
+          } catch(PDOException $e)
+          {
+              echo $e->getMessage();
+          }
+          // echo "<pre>";
           // var_dump($result);
           // die();
+          
 
           if($stmt->rowCount() == 1)
           {

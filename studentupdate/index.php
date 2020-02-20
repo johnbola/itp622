@@ -3,6 +3,58 @@
 
     $id = base64_decode($_GET['id']);
 
+    if(isset($_GET['del']))
+    {
+      if($_GET['del'] == 'y')
+      {
+        $data = [
+          'id' => $id
+        ];
+        $sql = "DELETE FROM tblstudents WHERE id = :id";
+        $stmt= $conn->prepare($sql);
+        $stmt->execute($data);
+  
+        $data = [
+          'id' => $id
+        ];
+        $sql = "DELETE FROM tblusers WHERE useraccountid = :id";
+        $stmt= $conn->prepare($sql);
+        $stmt->execute($data);
+  
+        header("location:../dashboard");
+      }
+    }
+   
+    if(isset($_GET['updatestatus']))
+    {
+      if($_GET['updatestatus'] == 'y')
+      {
+        $data = [
+          'id' => $id
+        ];
+        $sql = "UPDATE tblstudents SET sstatus='disabled' WHERE id=:id";
+        $stmt= $conn->prepare($sql);
+        $stmt->execute($data);
+        header("location:../dashboard");
+      }
+    }
+    if(isset($_GET['enablestatus']))
+    {
+      if($_GET['enablestatus'] == 'y')
+      {
+        $data = [
+          'id' => $id
+        ];
+        $sql = "UPDATE tblstudents SET sstatus='approved' WHERE id=:id";
+        $stmt= $conn->prepare($sql);
+        $stmt->execute($data);
+        header("location:../dashboard");
+      }
+    }
+    
+    
+
+
       $data = [
         'id' => $id
       ];
